@@ -71,6 +71,8 @@ public class LoginController {
                     String department = new DepartmentDAO(conn).getDepartmentName(employeeDTO.getDeptId());
                     controller.display(employeeDTO.getCode(), employeeDTO.getName(), employeeDTO.getDesignation(),
                             department, employeeDTO.getContact(), employeeDTO.getEmailId(), employeeDTO.getCompany());
+                    controller.setConn(this.conn);
+                    controller.setDeptId(employeeDTO.getDeptId());
                     stage.setScene(scene);
                     stage.show();
                 }

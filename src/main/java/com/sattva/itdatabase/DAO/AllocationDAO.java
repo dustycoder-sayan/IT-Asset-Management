@@ -10,9 +10,18 @@ public class AllocationDAO implements DatabaseConstants {
     private final Connection conn;      // Database Connection
 
     // SQL queries
-    private static final String REQUEST_ALLOCATION = "INSERT INTO "+ALLOCATION_TABLE+"("+ALLOCATION_EMP_CODE+","
-            +ALLOCATION_TYPE+","+ALLOCATION_SUBTYPE+","+ALLOCATION_SERIAL+","+ALLOCATION_QUANTITY+","+ALLOCATION_LOCATION_ID+","
-            +ALLOCATION_STATUS+","+ ALLOCATION_DATE+","+ALLOCATION_DURATION+") VALUES(?,?,?,?,?,?,?,?,?)";
+    private static final String REQUEST_IT_ALLOCATION = "INSERT INTO "+ALLOCATION_TABLE+"("+ALLOCATION_EMP_CODE+","
+            +ALLOCATION_TYPE+","+ALLOCATION_SUBTYPE+","+ALLOCATION_SERIAL+","+ALLOCATION_NEW_EMAIL+","
+            +ALLOCATION_DATACARD_NUM+","+ALLOCATION_DATACARD_JUST+"," +ALLOCATION_QUANTITY+","+ALLOCATION_LOCATION_ID
+            +","+ALLOCATION_STATUS+","+ ALLOCATION_DATE+","+ALLOCATION_DURATION+") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+    private static final String REQUEST_VPN_ALLOCATION = "INSERT INTO "+ALLOCATION_TABLE+"("+
+            ALLOCATION_EMP_CODE+","+ALLOCATION_TYPE+","+ALLOCATION_LOCATION_ID+","+ALLOCATION_VPN_ACTION+","
+            +ALLOCATION_VPN_ID+","+ALLOCATION_VPN_PURPOSE+","+ALLOCATION_VPN_APPLICATION+","+ALLOCATION_DURATION+","
+            +ALLOCATION_DATE+")" + " VALUES(?,?,?,?,?,?,?,?,?)";
+    private static final String REQUEST_SAP_ALLOCATION = "INSERT INTO "+ALLOCATION_TABLE+"("
+            +ALLOCATION_EMP_CODE+","+ALLOCATION_TYPE+","+ALLOCATION_LOCATION_ID+","+ALLOCATION_SAP_ACTION+","
+            +ALLOCATION_SAP_ID+","+ALLOCATION_SAP_FUNCTION+","+ALLOCATION_SAP_PROCESS+","+ALLOCATION_DATE+
+            ")"+" VALUES(?,?,?,?,?,?,?,?)";
     private static final String UPDATE_STATUS = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_STATUS+"=? WHERE "
             +ALLOCATION_ID+"=?";
     private static final String UPDATE_SERIAL = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_SERIAL+"=? WHERE "
@@ -26,25 +35,79 @@ public class AllocationDAO implements DatabaseConstants {
     }
 
     // Returns true if request made by employee was successfully updated in db, else returns false
-    public boolean requestAllocation(String empCode, String type, String subType, int quantity, String locationId, String date, int duration) {
+    public boolean requestAllocation(String empCode, String type, String subType, int quantity, String newEmail,
+                                     String datacardNum, String datacardJust, String locationId, String date,
+                                     int duration) {
         try {
-            PreparedStatement requestAllocation = conn.prepareStatement(REQUEST_ALLOCATION);
+            PreparedStatement requestAllocation = conn.prepareStatement(REQUEST_IT_ALLOCATION);
             requestAllocation.setString(1, empCode);
             requestAllocation.setString(2, type);
             requestAllocation.setString(3, subType);
             requestAllocation.setString(4, "");
-            requestAllocation.setInt(5, quantity);
-            requestAllocation.setString(6, locationId);
-            requestAllocation.setString(7, "Waiting");
-            requestAllocation.setString(8, date);
-            requestAllocation.setInt(9, duration);
+            requestAllocation.setString(5, newEmail);
+            requestAllocation.setString(6, datacardNum);
+            requestAllocation.setString(7, datacardJust);
+            requestAllocation.setInt(8, quantity);
+            requestAllocation.setString(9, locationId);
+            requestAllocation.setString(10, "WAITING");
+            requestAllocation.setString(11, date);
+            requestAllocation.setInt(12, duration);
 
             int affectedRows = requestAllocation.executeUpdate();
             if(affectedRows != 1)
                 throw new SQLException("More than one row affected when requesting asset "+type+" by "+empCode);
             return true;
         } catch (SQLException e) {
-            System.out.println("Exception Occurred: "+e.getMessage());
+            System.out.println("Exception Occurred while inserting allocation: "+e.getMessage());
+            return false;
+        }
+    }
+
+    // Returns true if request made by employee was successfully updated in db, else returns false
+    public boolean requestVpn(String empCode, String locationId, String action, String vpnId, String purpose,
+                              String application, int duration, String date) {
+        try {
+            PreparedStatement requestVpn = conn.prepareStatement(REQUEST_VPN_ALLOCATION);
+            requestVpn.setString(1, empCode);
+            requestVpn.setString(2, "VPN");
+            requestVpn.setString(3, locationId);
+            requestVpn.setString(4, action);
+            requestVpn.setString(5, vpnId);
+            requestVpn.setString(6, purpose);
+            requestVpn.setString(7, application);
+            requestVpn.setInt(8, duration);
+            requestVpn.setString(9, date);
+
+            int affectedRows = requestVpn.executeUpdate();
+            if(affectedRows != 1)
+                throw new SQLException("More than one row affected when requesting VPN");
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while inserting allocation (VPN): "+e.getMessage());
+            return false;
+        }
+    }
+
+    // Returns true if request made by employee was successfully updated in db, else returns false
+    public boolean requestSap(String empCode, String locationId, String action, String id, String processOwner,
+                              String function, String date) {
+        try {
+            PreparedStatement requestSap = conn.prepareStatement(REQUEST_SAP_ALLOCATION);
+            requestSap.setString(1, empCode);
+            requestSap.setString(2, "SAP");
+            requestSap.setString(3, locationId);
+            requestSap.setString(4, action);
+            requestSap.setString(5, id);
+            requestSap.setString(6, function);
+            requestSap.setString(7, processOwner);
+            requestSap.setString(8, date);
+
+            int affectedRows = requestSap.executeUpdate();
+            if(affectedRows != 1)
+                throw new SQLException("More than one row affected when requesting SAP");
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while inserting allocation (SAP): "+e.getMessage());
             return false;
         }
     }

@@ -18,6 +18,8 @@ public class DepartmentDAO implements DatabaseConstants {
                                 DEPARTMENT_DEPT_ID+"=?";
     private static final String DEPT_ID = "SELECT "+DEPARTMENT_DEPT_ID+" FROM "+DEPARTMENT_TABLE+" WHERE "+
             DEPARTMENT_NAME+"=? AND "+DEPARTMENT_LOCATION_ID+"=?";
+    private static final String DEPT_LOCATION = "SELECT "+DEPARTMENT_LOCATION_ID+" FROM "+DEPARTMENT_TABLE+" WHERE "
+            +DEPARTMENT_DEPT_ID+"=?";
 
     // Constructor to accept database connection
     public DepartmentDAO(Connection conn) {
@@ -127,6 +129,21 @@ public class DepartmentDAO implements DatabaseConstants {
                 throw new SQLException("No such department found");
         } catch (SQLException e) {
             System.out.println("Exception occurred when fetching department ID: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public String getDeptLocation(String deptId) {
+        try {
+            PreparedStatement getDeptLocation = conn.prepareStatement(DEPT_LOCATION);
+            getDeptLocation.setString(1, deptId);
+            ResultSet results = getDeptLocation.executeQuery();
+            if(results.next())
+                return results.getString(1);
+            else
+                throw new SQLException("No such department found");
+        } catch (SQLException e) {
+            System.out.println("Exception occurred when fetching department Location: "+e.getMessage());
             return null;
         }
     }

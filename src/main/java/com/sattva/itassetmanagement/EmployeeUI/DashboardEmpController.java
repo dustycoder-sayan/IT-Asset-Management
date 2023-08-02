@@ -1,6 +1,8 @@
 package com.sattva.itassetmanagement.EmployeeUI;
 
 import com.sattva.itassetmanagement.StartApplication;
+import com.sattva.itdatabase.DAO.DepartmentDAO;
+import com.sattva.itdatabase.Datasource.Datasource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 public class DashboardEmpController {
     @FXML
@@ -46,7 +49,8 @@ public class DashboardEmpController {
     @FXML
     private AnchorPane mainPane;
 
-    private String code;
+    private String code, deptId;
+    private Connection conn;
 
     public void display(String code, String name, String designation, String department, String contact, String email,
     String company) {
@@ -60,6 +64,14 @@ public class DashboardEmpController {
         companyLabel.setText(company);
     }
 
+    public void setConn(Connection conn) {
+        this.conn = conn;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
     public void onAcquired(ActionEvent e) {
         // Table view displaying all assets, vpns and saps taken
     }
@@ -69,6 +81,10 @@ public class DashboardEmpController {
         FXMLLoader fxmlLoader = new FXMLLoader(DashboardEmpController.class.getResource("asset-req.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Asset Request");
+        AssetReqController controller = fxmlLoader.getController();
+        controller.setCode(this.code);
+        controller.setConn(this.conn);
+        controller.setLocationId(new DepartmentDAO(conn).getDeptLocation(this.deptId));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -79,6 +95,10 @@ public class DashboardEmpController {
         FXMLLoader fxmlLoader = new FXMLLoader(DashboardEmpController.class.getResource("vpn-req.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("VPN Request");
+        VpnReqController controller = fxmlLoader.getController();
+        controller.setCode(this.code);
+        controller.setConn(this.conn);
+        controller.setLocationId(new DepartmentDAO(conn).getDeptLocation(this.deptId));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -89,6 +109,10 @@ public class DashboardEmpController {
         FXMLLoader fxmlLoader = new FXMLLoader(DashboardEmpController.class.getResource("sap-req.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("SAP Request");
+        SapReqController controller = fxmlLoader.getController();
+        controller.setCode(this.code);
+        controller.setConn(this.conn);
+        controller.setLocationId(new DepartmentDAO(conn).getDeptLocation(this.deptId));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
