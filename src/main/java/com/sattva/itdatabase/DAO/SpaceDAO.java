@@ -34,7 +34,7 @@ public class SpaceDAO implements DatabaseConstants {
     public boolean insertSpace(String space) {
         try {
             if(spaceExists(space))
-                throw new SQLException("Space already inserted");
+                return true;
             PreparedStatement insertSpace = conn.prepareStatement(INSERT_SPACE);
             insertSpace.setString(1, space);
             int affectedRows = insertSpace.executeUpdate();

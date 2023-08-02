@@ -3,11 +3,12 @@ package com.sattva.itdatabase.DTO;
 import java.sql.Date;
 
 public class EmployeeDTO {
-    private String code, name, company, designation, contact, emailId, deptId, reprtMgrCode;
-    private Date joining, resigning;
+    private String code, name, company, designation, contact, emailId, deptId, reprtMgrCode, password;
+    private String joining, resigning;
 
-    public EmployeeDTO(String code, String name, String company, String designation, String contact, String emailId, String deptId, String reprtMgrCode, Date joining, Date resigning) {
+    public EmployeeDTO(String code, String password, String name, String company, String designation, String contact, String emailId, String deptId, String reprtMgrCode, String joining, String resigning) {
         this.code = code;
+        this.password = password;
         this.name = name;
         this.company = company;
         this.designation = designation;
@@ -51,11 +52,11 @@ public class EmployeeDTO {
         this.reprtMgrCode = reprtMgrCode;
     }
 
-    public void setJoining(Date joining) {
+    public void setJoining(String joining) {
         this.joining = joining;
     }
 
-    public void setResigning(Date resigning) {
+    public void setResigning(String resigning) {
         this.resigning = resigning;
     }
 
@@ -91,11 +92,19 @@ public class EmployeeDTO {
         return reprtMgrCode;
     }
 
-    public Date getJoining() {
+    public String getJoining() {
         return joining;
     }
 
-    public Date getResigning() {
+    public String getResigning() {
         return resigning;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

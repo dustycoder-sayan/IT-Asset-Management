@@ -2,7 +2,7 @@ package com.sattva.itdatabase.Database;
 
 public interface DatabaseConstants {
     String DATABASE_NAME = "itassetmgmt.db";
-    String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\LENOVO\\OneDrive\\Documents\\Projects\\IT Asset Mgmt\\src\\Database\\" + DATABASE_NAME;
+    String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\LENOVO\\OneDrive\\Documents\\Projects\\IT Asset Management\\src\\main\\java\\com\\sattva\\itdatabase\\Database\\" + DATABASE_NAME;
 
     String ALLOCATION_TABLE = "ALLOCATION";
     String ASSETS_TABLE = "ASSETS";
@@ -13,7 +13,11 @@ public interface DatabaseConstants {
     String CITY_TABLE = "CITY";
     String SPACE_TABLE = "SPACE";
     String LOCATION2_TABLE = "LOCATION2";
+    String VPN_TABLE = "VPN";
+    String SAP_TABLE = "SAP";
+    String DATACARD_TABLE = "DATACARD";
 
+    String ALLOCATION_ID = "ALLOCATION_ID";
     String ALLOCATION_EMP_CODE = "EMP_CODE";
     String ALLOCATION_SERIAL = "SERIAL";
     String ALLOCATION_TYPE = "TYPE";
@@ -22,6 +26,8 @@ public interface DatabaseConstants {
     String ALLOCATION_REMARKS = "REMARKS";
     String ALLOCATION_DATE = "DATE_OF_ALLOCATION";
     String ALLOCATION_LOCATION_ID = "LOCATION_ID";
+    String ALLOCATION_DURATION = "DURATION";
+    String ALLOCATION_SUBTYPE = "SUBTYPE";
 
     String ASSETS_SERIAL = "SERIAL";
     String ASSETS_TYPE = "TYPE";
@@ -32,6 +38,7 @@ public interface DatabaseConstants {
     String ASSETS_OUTSTOCK = "OUTSTOCK";
     String ASSETS_INSTOCK = "INSTOCK";
     String ASSETS_VENDOR = "VENDOR_ID";
+    String ASSETS_SUBTYPE = "SUBTYPE";
 
     String DEPARTMENT_DEPT_ID = "DEPT_ID";
     String DEPARTMENT_NAME = "NAME";

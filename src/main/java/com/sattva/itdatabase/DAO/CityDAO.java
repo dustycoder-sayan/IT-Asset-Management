@@ -34,7 +34,7 @@ public class CityDAO implements DatabaseConstants {
     public boolean insertCity(String city) {
         try {
             if(cityExists(city))
-                throw new SQLException("City already inserted");
+                return true;
             PreparedStatement insertCity = conn.prepareStatement(INSERT_CITY);
             insertCity.setString(1, city);
             int affectedRows = insertCity.executeUpdate();

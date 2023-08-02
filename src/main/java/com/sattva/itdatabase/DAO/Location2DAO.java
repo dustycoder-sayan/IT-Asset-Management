@@ -35,7 +35,7 @@ public class Location2DAO implements DatabaseConstants {
     public boolean insertLocation(String location) {
         try {
             if(locationExists(location))
-                throw new SQLException("Location already inserted");
+                return true;
             PreparedStatement insertLocation = conn.prepareStatement(INSERT_LOCATION);
             insertLocation.setString(1, location);
             int affectedRows = insertLocation.executeUpdate();

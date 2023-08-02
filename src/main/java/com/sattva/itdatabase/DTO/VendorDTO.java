@@ -4,7 +4,7 @@ public class VendorDTO {
     private String name, phone, location, emailId;
     private int vendorId;
 
-    public VendorDTO(String name, String phone, String location, String emailId, int vendorId, double credit, double debit) {
+    public VendorDTO(int vendorId, String name, String phone, String location, String emailId) {
         this.name = name;
         this.phone = phone;
         this.location = location;

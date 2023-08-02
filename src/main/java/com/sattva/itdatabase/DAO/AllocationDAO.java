@@ -11,10 +11,12 @@ public class AllocationDAO implements DatabaseConstants {
 
     // SQL queries
     private static final String REQUEST_ALLOCATION = "INSERT INTO "+ALLOCATION_TABLE+"("+ALLOCATION_EMP_CODE+","
-            +ALLOCATION_TYPE+","+ALLOCATION_SERIAL+","+ALLOCATION_QUANTITY+","+ALLOCATION_LOCATION_ID+","+ALLOCATION_STATUS+","+
-            ALLOCATION_DATE+") VALUES(?,?,?,?,?,?,?)";
+            +ALLOCATION_TYPE+","+ALLOCATION_SUBTYPE+","+ALLOCATION_SERIAL+","+ALLOCATION_QUANTITY+","+ALLOCATION_LOCATION_ID+","
+            +ALLOCATION_STATUS+","+ ALLOCATION_DATE+","+ALLOCATION_DURATION+") VALUES(?,?,?,?,?,?,?,?,?)";
     private static final String UPDATE_STATUS = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_STATUS+"=? WHERE "
-            +ALLOCATION_EMP_CODE+"=? AND "+ALLOCATION_SERIAL+"=?";
+            +ALLOCATION_ID+"=?";
+    private static final String UPDATE_SERIAL = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_SERIAL+"=? WHERE "
+            +ALLOCATION_ID+"=?";
     private static final String UPDATE_REMARKS = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_REMARKS+"=? WHERE "
             +ALLOCATION_EMP_CODE+"=? AND "+ALLOCATION_SERIAL+"=?";
 
@@ -24,16 +26,18 @@ public class AllocationDAO implements DatabaseConstants {
     }
 
     // Returns true if request made by employee was successfully updated in db, else returns false
-    public boolean requestAllocation(String empCode, String type, int quantity, String locationId, String date) {
+    public boolean requestAllocation(String empCode, String type, String subType, int quantity, String locationId, String date, int duration) {
         try {
             PreparedStatement requestAllocation = conn.prepareStatement(REQUEST_ALLOCATION);
             requestAllocation.setString(1, empCode);
             requestAllocation.setString(2, type);
-            requestAllocation.setString(3, "");
-            requestAllocation.setInt(4, quantity);
-            requestAllocation.setString(5, locationId);
-            requestAllocation.setString(6, "Waiting");
-            requestAllocation.setString(7, date);
+            requestAllocation.setString(3, subType);
+            requestAllocation.setString(4, "");
+            requestAllocation.setInt(5, quantity);
+            requestAllocation.setString(6, locationId);
+            requestAllocation.setString(7, "Waiting");
+            requestAllocation.setString(8, date);
+            requestAllocation.setInt(9, duration);
 
             int affectedRows = requestAllocation.executeUpdate();
             if(affectedRows != 1)
@@ -45,22 +49,28 @@ public class AllocationDAO implements DatabaseConstants {
         }
     }
 
+    // Updates both serial and status
     // Updates the status(accepted/rejected) of the request as decided by the admin
-    public boolean acceptRejectAllocation(String empCode, String serial, String status) {
+    // and sets serial if accepted, else sets serial as ""
+    public boolean updateStatusAndSerial(int allocationId, String status, String serial) {
         try {
-            if(status.equalsIgnoreCase("reject"))
+            status = status.toLowerCase();
+            if(status.contains("reject"))
                 serial = "";
-            PreparedStatement accRejAllocation = conn.prepareStatement(UPDATE_STATUS);
-            accRejAllocation.setString(2, empCode);
-            accRejAllocation.setString(3, serial);
-            if(status.equalsIgnoreCase("accept"))
-                accRejAllocation.setString(1, "Accepted");
+            PreparedStatement updateStatus = conn.prepareStatement(UPDATE_STATUS);
+            updateStatus.setInt(2,allocationId);
+            PreparedStatement updateSerial = conn.prepareStatement(UPDATE_SERIAL);
+            updateSerial.setInt(2,allocationId);
+            if(status.contains("accept"))
+                updateStatus.setString(1, "Accepted");
             else
-                accRejAllocation.setString(1, "Rejected");
+                updateStatus.setString(1, "Rejected");
 
-            int affectedRows = accRejAllocation.executeUpdate();
-            if(affectedRows != 1)
-                throw new SQLException("More than one row affected when updating allocation status of "+serial+" by "+empCode);
+            updateSerial.setString(1, serial);
+            int affectedRows = updateStatus.executeUpdate();
+            int affectedRows2 = updateSerial.executeUpdate();
+            if(affectedRows != 1 || affectedRows2 != 1)
+                throw new SQLException("More than one row affected when updating allocation status and serial");
             return true;
         } catch (SQLException e) {
             System.out.println("Exception Occurred: "+e.getMessage());

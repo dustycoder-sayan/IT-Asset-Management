@@ -1,12 +1,21 @@
 package com.sattva.itdatabase.DTO;
 
 public class LocationDTO {
-    String city, location, space;
+    String city, location, space, locationId;
 
-    public LocationDTO(String city, String location, String space) {
+    public LocationDTO(String locationId, String city, String location, String space) {
+        this.locationId = locationId;
         this.city = city;
         this.location = location;
         this.space = space;
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
+    }
+
+    public String getLocationId() {
+        return locationId;
     }
 
     public void setCity(String city) {

@@ -1,12 +1,12 @@
 package com.sattva.itdatabase.DTO;
 
 public class DepartmentDTO {
-    private String deptId, name, city, hodCode;
+    private String deptId, name, locationId, hodCode;
 
-    public DepartmentDTO(String deptId, String name, String city, String hodCode) {
+    public DepartmentDTO(String deptId, String name, String locationId, String hodCode) {
         this.deptId = deptId;
         this.name = name;
-        this.city = city;
+        this.locationId = locationId;
         this.hodCode = hodCode;
     }
 
@@ -18,8 +18,8 @@ public class DepartmentDTO {
         this.name = name;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
     }
 
     public void setHodCode(String hodCode) {
@@ -34,8 +34,8 @@ public class DepartmentDTO {
         return name;
     }
 
-    public String getCity() {
-        return city;
+    public String getLocationId() {
+        return locationId;
     }
 
     public String getHodCode() {

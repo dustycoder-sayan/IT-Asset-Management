@@ -6,4 +6,13 @@ module com.sattva.itassetmanagement {
 
     opens com.sattva.itassetmanagement to javafx.fxml;
     exports com.sattva.itassetmanagement;
+
+    opens com.sattva.itassetmanagement.EmployeeUI to javafx.fxml;
+    exports com.sattva.itassetmanagement.EmployeeUI;
+
+    opens com.sattva.itassetmanagement.AdminUI to javafx.fxml;
+    exports com.sattva.itassetmanagement.AdminUI;
+
+    opens com.sattva.itdatabase.DTO to javafx.fxml;
+    exports com.sattva.itdatabase.DTO;
 }

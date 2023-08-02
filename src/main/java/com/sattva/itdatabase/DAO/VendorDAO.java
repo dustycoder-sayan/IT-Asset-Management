@@ -17,6 +17,8 @@ public class VendorDAO implements DatabaseConstants {
             +VENDOR_CONTACT+"=? AND "+VENDOR_LOCATION+"=? AND "+VENDOR_EMAIL+"=?";
     public static final String UPDATE_VENDOR_CONTACT = "UPDATE "+VENDOR_TABLE+" SET "+VENDOR_CONTACT+"=? WHERE "+
             VENDOR_ID+"=?";
+    public static final String GET_VENDOR_ID = "SELECT "+VENDOR_ID+" FROM "+VENDOR_TABLE+" WHERE "+VENDOR_NAME+"=? AND " +
+            VENDOR_CONTACT+"=?";
 
     // Constructor to accept database connection
     public VendorDAO(Connection conn) {
@@ -24,7 +26,7 @@ public class VendorDAO implements DatabaseConstants {
     }
 
     // Returns the vendorId if vendor already exists, else -1
-    private int vendorExists(String name, String contact, String location, String emailId) throws SQLException {
+    public int vendorExists(String name, String contact, String location, String emailId) throws SQLException {
         PreparedStatement queryVendor = conn.prepareStatement(QUERY_VENDOR);
         queryVendor.setString(1, name);
         queryVendor.setString(2, contact);
@@ -79,6 +81,23 @@ public class VendorDAO implements DatabaseConstants {
         } catch (SQLException e) {
             System.out.println("Exception Occurred: "+e.getMessage());
             return false;
+        }
+    }
+
+    // Returns vendorId if vendor exists, else returns -1
+    public int getVendorId(String name, String contact) {
+        try {
+            PreparedStatement getVendorId = conn.prepareStatement(GET_VENDOR_ID);
+            getVendorId.setString(1, name);
+            getVendorId.setString(2, contact);
+            ResultSet result = getVendorId.executeQuery();
+            if(result.next())
+                return result.getInt(1);
+            else
+                throw new SQLException("No such Vendor Found");
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+            return -1;
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.sattva.itdatabase.DAO;
 
+import com.sattva.itdatabase.DTO.EmployeeDTO;
 import com.sattva.itdatabase.Database.DatabaseConstants;
 
 import java.sql.Connection;
@@ -32,6 +33,11 @@ public class EmployeeDAO implements DatabaseConstants {
             EMPLOYEE_CODE+"=?";
     private static final String LOGIN = "SELECT "+EMPLOYEE_COMPANY+" FROM "+EMPLOYEE_TABLE+" WHERE "+EMPLOYEE_CODE+"=? AND " +
             EMPLOYEE_PASSWORD+"=?";
+    private static final String UPDATE_EMPLOYEE_EMAIL = "UPDATE "+EMPLOYEE_TABLE+" SET "+EMPLOYEE_EMAIL+"=? " +
+            "WHERE "+EMPLOYEE_CODE+"=?";
+    private static final String UPDATE_EMPLOYEE_PASSWORD = "UPDATE "+EMPLOYEE_TABLE+" SET "+EMPLOYEE_PASSWORD+"=? " +
+            "WHERE "+EMPLOYEE_CODE+"=?";
+    private static final String GET_EMPLOYEE_DETAILS = "SELECT * FROM "+EMPLOYEE_TABLE+" WHERE "+EMPLOYEE_CODE+"=?";
 
     // Constructor to accept database connection
     public EmployeeDAO(Connection conn) {
@@ -73,6 +79,8 @@ public class EmployeeDAO implements DatabaseConstants {
     // Returns true if employee has resigned, else returns false
     public boolean employeeResigned(String code) {
         try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
             PreparedStatement employeeResigned = conn.prepareStatement(EMPLOYEE_RESIGNED);
             employeeResigned.setString(1, code);
 
@@ -112,9 +120,11 @@ public class EmployeeDAO implements DatabaseConstants {
         }
     }
 
-    // For all updates, returns true if update was successful, else returns false
+    // Returns true if resignation date update was successful, else returns false
     public boolean updateEmployeeResignation(String code, String resignDate) {
         try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
             PreparedStatement updateEmployeeResignation = conn.prepareStatement(UPDATE_EMPLOYEE_RESIGNATION);
             updateEmployeeResignation.setString(1, resignDate);
             updateEmployeeResignation.setString(2, code);
@@ -131,6 +141,8 @@ public class EmployeeDAO implements DatabaseConstants {
 
     public boolean updateEmployeeCompany(String code, String company) {
         try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
             PreparedStatement updateEmployeeCompany = conn.prepareStatement(UPDATE_EMPLOYEE_COMPANY);
             updateEmployeeCompany.setString(1, company);
             updateEmployeeCompany.setString(2, code);
@@ -147,6 +159,8 @@ public class EmployeeDAO implements DatabaseConstants {
 
     public boolean updateEmployeeDesgn(String code, String desgn) {
         try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
             PreparedStatement updateEmployeeDesgn = conn.prepareStatement(UPDATE_EMPLOYEE_DESGN);
             updateEmployeeDesgn.setString(1, desgn);
             updateEmployeeDesgn.setString(2, code);
@@ -163,6 +177,8 @@ public class EmployeeDAO implements DatabaseConstants {
 
     public boolean updateEmployeeContact(String code, String contact) {
         try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
             PreparedStatement updateEmployeeContact = conn.prepareStatement(UPDATE_EMPLOYEE_CONTACT);
             updateEmployeeContact.setString(1, contact);
             updateEmployeeContact.setString(2, code);
@@ -177,8 +193,28 @@ public class EmployeeDAO implements DatabaseConstants {
         }
     }
 
+    public boolean updateEmployeeEmail(String code, String email) {
+        try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
+            PreparedStatement updateEmployeeEmail = conn.prepareStatement(UPDATE_EMPLOYEE_EMAIL);
+            updateEmployeeEmail.setString(1, email);
+            updateEmployeeEmail.setString(2, code);
+
+            int affectedRows = updateEmployeeEmail.executeUpdate();
+            if(affectedRows != 1)
+                throw new SQLException("More than one row affected when updating email of employee "+code);
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return false;
+        }
+    }
+
     public boolean updateEmployeeDeptId(String code, String deptId) {
         try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
             PreparedStatement updateEmployeeDeptId = conn.prepareStatement(UPDATE_EMPLOYEE_DEPTID);
             updateEmployeeDeptId.setString(1, deptId);
             updateEmployeeDeptId.setString(2, code);
@@ -195,6 +231,8 @@ public class EmployeeDAO implements DatabaseConstants {
 
     public boolean updateEmployeeReprtMgrId(String code, String reprtMgrId) {
         try {
+            if(!employeeExists(reprtMgrId))
+                throw new SQLException("No such manager exists");
             PreparedStatement updateEmployeeReprtMgr = conn.prepareStatement(UPDATE_EMPLOYEE_REPRTMGRCODE);
             updateEmployeeReprtMgr.setString(1, reprtMgrId);
             updateEmployeeReprtMgr.setString(2, code);
@@ -206,6 +244,40 @@ public class EmployeeDAO implements DatabaseConstants {
         } catch (SQLException e) {
             System.out.println("Exception Occurred: "+e.getMessage());
             return false;
+        }
+    }
+
+    public boolean updateEmployeePassword(String code, String password) {
+        try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
+            PreparedStatement updateEmployeePassword = conn.prepareStatement(UPDATE_EMPLOYEE_PASSWORD);
+            updateEmployeePassword.setString(1, password);
+            updateEmployeePassword.setString(2, code);
+
+            int affectedRows = updateEmployeePassword.executeUpdate();
+            if(affectedRows != 1)
+                throw new SQLException("More than one row affected when updating password of employee "+code);
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return false;
+        }
+    }
+
+    public EmployeeDTO getEmployeeDetails(String code) {
+        try {
+            if(!employeeExists(code))
+                throw new SQLException("No such employee exists");
+            PreparedStatement employeeDetails = conn.prepareStatement(GET_EMPLOYEE_DETAILS);
+            employeeDetails.setString(1, code);
+            ResultSet results = employeeDetails.executeQuery();
+            return new EmployeeDTO(code, results.getString(2), results.getString(3), results.getString(4),
+                    results.getString(5), results.getString(6), results.getString(7), results.getString(10),
+                    results.getString(11), results.getString(8), results.getString(9));
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while fetching Employee data: "+e.getMessage());
+            return null;
         }
     }
 }
