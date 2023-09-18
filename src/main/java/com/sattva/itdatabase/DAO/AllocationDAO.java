@@ -142,16 +142,15 @@ public class AllocationDAO implements DatabaseConstants {
     }
 
     // Request made by the employee on clearance of the IT asset - Returns true if successfully placed, else returns false
-    public boolean updateStatusOnReturnRequest(String empCode, String serial) {
+    public boolean updateStatusOnReturnRequest(int allocId) {
         try {
             PreparedStatement clearanceUpdate = conn.prepareStatement(UPDATE_STATUS);
             clearanceUpdate.setString(1, "Clearance Waiting");
-            clearanceUpdate.setString(2, empCode);
-            clearanceUpdate.setString(3, serial);
+            clearanceUpdate.setInt(2, allocId);
 
             int affectedRows = clearanceUpdate.executeUpdate();
             if(affectedRows != 1)
-                throw new SQLException("More than one row affected when updating clearance allocation status of "+serial+" by "+empCode);
+                throw new SQLException("More than one row affected when updating clearance allocation status of "+allocId);
             return true;
         } catch (SQLException e) {
             System.out.println("Exception Occurred: "+e.getMessage());

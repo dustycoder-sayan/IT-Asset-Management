@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="647.0" prefWidth="771.0" style="-fx-background-color: #9DB2BF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sattva.itassetmanagement.AdminUI.ClearanceController">
+    <children>
+        <ImageView fitHeight="83.0" fitWidth="142.0" layoutX="615.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/salarpuria-sattva-logo.png" />
+            </image>
+        </ImageView>
+        <Label alignment="CENTER" layoutY="3.0" prefHeight="100.0" prefWidth="771.0" text="Clearance Requests">
+            <font>
+                <Font name="Javanese Text" size="36.0" />
+            </font>
+        </Label>
+        <Button fx:id="submitBtn" layoutX="144.0" layoutY="593.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="40.0" prefWidth="504.0" text="SUBMIT">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+        <TableView fx:id="assetTable" layoutX="38.0" layoutY="138.0" prefHeight="405.0" prefWidth="696.0">
+            <columns>
+                <TableColumn fx:id="locationCol" prefWidth="131.0" text="Location" />
+                <TableColumn fx:id="empCodeCol" prefWidth="133.5" text="Employee Code" />
+                <TableColumn fx:id="typeColumn" prefWidth="93.0" text="Type" />
+                <TableColumn fx:id="subTypeColumn" maxWidth="291.0" minWidth="-1.0" prefWidth="118.0" text="SubType" />
+                <TableColumn fx:id="serialCol" prefWidth="127.5" text="Serial" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

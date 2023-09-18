@@ -5,19 +5,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionFactory implements DatabaseConstants{
-    private static ConnectionFactory instance = new ConnectionFactory();
+    private static ConnectionFactory instance;
     private Connection conn;
 
-    private  ConnectionFactory() {
+    private ConnectionFactory() {
     }
 
     public static ConnectionFactory getInstance() {
+        if(instance == null)
+            instance = new ConnectionFactory();
         return instance;
     }
 
     public Connection open() {
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            if(conn == null)
+                conn = DriverManager.getConnection(CONNECTION_STRING);
             return conn;
         } catch (SQLException e) {
             System.out.println("Couldn't connect to Database: "+e.getMessage());

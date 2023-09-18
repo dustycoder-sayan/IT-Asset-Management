@@ -2,7 +2,7 @@ package com.sattva.itdatabase.DTO;
 
 public class AssetsDTO {
     private String serial, type, name, model, os, condition, subType;
-    private int outStock, inStock, vendorId;
+    private int outStock, inStock, vendorId, totalStock;
 
     public AssetsDTO(String serial, String type, String subType, String name, String model, String os, String condition, int outStock, int inStock, int vendorId) {
         this.serial = serial;
@@ -15,6 +15,15 @@ public class AssetsDTO {
         this.inStock = inStock;
         this.vendorId = vendorId;
         this.subType = subType;
+        this.totalStock = inStock + outStock;
+    }
+
+    public void setTotalStock(int totalStock) {
+        this.totalStock = totalStock;
+    }
+
+    public int getTotalStock() {
+        return totalStock;
     }
 
     public String getSubType() {

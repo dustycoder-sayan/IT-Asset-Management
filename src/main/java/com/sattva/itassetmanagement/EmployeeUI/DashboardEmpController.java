@@ -72,8 +72,16 @@ public class DashboardEmpController {
         this.deptId = deptId;
     }
 
-    public void onAcquired(ActionEvent e) {
-        // Table view displaying all assets, vpns and saps taken
+    public void onAcquired(ActionEvent e) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardEmpController.class.getResource("asset-acq.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Assets Requested/Acquired");
+        AssetAcqController controller = fxmlLoader.getController();
+        controller.setCode(this.code);
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void onAssetRequest(ActionEvent e) throws IOException {
@@ -124,6 +132,8 @@ public class DashboardEmpController {
         FXMLLoader fxmlLoader = new FXMLLoader(DashboardEmpController.class.getResource("clearance.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Clearance Request");
+        ClearanceController controller = fxmlLoader.getController();
+        controller.setCode(this.code);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

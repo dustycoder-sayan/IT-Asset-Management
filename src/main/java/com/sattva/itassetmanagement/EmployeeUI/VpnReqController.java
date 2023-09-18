@@ -90,6 +90,9 @@ public class VpnReqController implements Initializable {
                 application = vpnResources.getText();
         int duration = 0;
 
+        if(!vpnAction.equals("Create a VPN ID"))
+
+
         if(!durationField.getText().equals(""))
             duration = Integer.parseInt(durationField.getText());
 

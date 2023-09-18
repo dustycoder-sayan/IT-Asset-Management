@@ -16,12 +16,16 @@ public class AssetsDAO implements DatabaseConstants {
     private static final String ASSET_EXISTS = "SELECT "+ASSETS_SERIAL+" FROM "+ASSETS_TABLE+" WHERE "+ASSETS_SERIAL+"=?";
     private static final String UPDATE_OS = "UPDATE "+ASSETS_TABLE+" SET "+ASSETS_OS+"=? WHERE "+ASSETS_SERIAL+"=?";
     private static final String UPDATE_CONDITION = "UPDATE "+ASSETS_TABLE+" SET "+ASSETS_CONDITION+"=? WHERE "+ASSETS_SERIAL+"=?";
-    private static final String GET_ASSET_SERIAL = "SELECT "+ASSETS_SERIAL+" FROM "+ASSETS_TABLE+" WHERE "+ASSETS_TYPE
-            +"=? AND "+ASSETS_INSTOCK+">0 AND "+ASSETS_SUBTYPE+"=?";
     private static final String UPDATE_INSTOCK = "UPDATE "+ASSETS_TABLE+" SET "+ASSETS_INSTOCK+"=? WHERE "+ASSETS_SERIAL+"=?";
     private static final String UPDATE_OUTSTOCK = "UPDATE "+ASSETS_TABLE+" SET "+ASSETS_OUTSTOCK+"=? WHERE "+ASSETS_SERIAL+"=?";
     private static final String GET_INSTOCK = "SELECT "+ASSETS_INSTOCK+" FROM "+ASSETS_TABLE+" WHERE "+ASSETS_SERIAL+"=?";
     private static final String GET_OUTSTOCK = "SELECT "+ASSETS_OUTSTOCK+" FROM "+ASSETS_TABLE+" WHERE "+ASSETS_SERIAL+"=?";
+    private static final String GET_ASSET_NAME = "SELECT "+ASSETS_NAME+" FROM "+ASSETS_TABLE+" WHERE "+ASSETS_TYPE
+            +"=? AND "+ASSETS_INSTOCK+">0 AND "+ASSETS_SUBTYPE+"=?";
+    private static final String GET_ASSET_MODEL = "SELECT "+ASSETS_MODEL+" FROM "+ASSETS_TABLE+" WHERE "+ASSETS_TYPE
+            +"=? AND "+ASSETS_INSTOCK+">0 AND "+ASSETS_SUBTYPE+"=? AND "+ASSETS_NAME+"=?";
+    private static final String GET_ASSET_SERIAL = "SELECT "+ASSETS_SERIAL+" FROM "+ASSETS_TABLE+" WHERE "+ASSETS_TYPE
+            +"=? AND "+ASSETS_INSTOCK+">0 AND "+ASSETS_SUBTYPE+"=? AND "+ASSETS_NAME+"=? AND "+ASSETS_MODEL+"=?";
 
     // Constructor to accept database connection
     public AssetsDAO(Connection conn) {
@@ -70,7 +74,7 @@ public class AssetsDAO implements DatabaseConstants {
     }
 
     // Returns true if a non-system (vpn,printer,etc.) asset was successfully added to db, else returns false
-    public boolean insertPrinter(String serial, String type, String subType, String name, String model, int inStock, int outStock, int vendorId) {
+    public boolean insertNotSystem(String serial, String type, String subType, String name, String model, int inStock, int outStock, int vendorId) {
         if(assetExists(serial))
             return true;
         try {
@@ -212,17 +216,51 @@ public class AssetsDAO implements DatabaseConstants {
         }
     }
 
-    // get all asset serial of given type and subtype
-    public ArrayList<String> getAssetSerial(String type, String subType) {
+    public ArrayList<String> assetNames(String type, String subType) {
         try {
-            PreparedStatement assetSerial = conn.prepareStatement(GET_ASSET_SERIAL);
-            assetSerial.setString(1, type);
-            assetSerial.setString(2, subType);
-            ArrayList<String> serials = new ArrayList<>();
-            ResultSet results = assetSerial.executeQuery();
+            PreparedStatement assetNames = conn.prepareStatement(GET_ASSET_NAME);
+            assetNames.setString(1, type);
+            assetNames.setString(2, subType);
+            ArrayList<String> list = new ArrayList<>();
+            ResultSet results = assetNames.executeQuery();
             while(results.next())
-                serials.add(results.getString(1));
-            return serials;
+                list.add(results.getString(1));
+            return list;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<String> assetModels(String type, String subType, String name) {
+        try {
+            PreparedStatement assetModel = conn.prepareStatement(GET_ASSET_MODEL);
+            assetModel.setString(1, type);
+            assetModel.setString(2, subType);
+            assetModel.setString(3, name);
+            ArrayList<String> list = new ArrayList<>();
+            ResultSet results = assetModel.executeQuery();
+            while(results.next())
+                list.add(results.getString(1));
+            return list;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<String> assetSerials(String type, String subType, String name, String model) {
+        try {
+            PreparedStatement assetSerials = conn.prepareStatement(GET_ASSET_SERIAL);
+            assetSerials.setString(1, type);
+            assetSerials.setString(2, subType);
+            assetSerials.setString(3, name);
+            assetSerials.setString(4, model);
+            ArrayList<String> list = new ArrayList<>();
+            ResultSet results = assetSerials.executeQuery();
+            while(results.next())
+                list.add(results.getString(1));
+            return list;
         } catch (SQLException e) {
             System.out.println("Exception Occurred: "+e.getMessage());
             return null;

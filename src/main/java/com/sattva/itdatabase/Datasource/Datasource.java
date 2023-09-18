@@ -5,10 +5,7 @@ import com.sattva.itdatabase.DAO.EmployeeDAO;
 import com.sattva.itdatabase.DTO.*;
 import com.sattva.itdatabase.Database.DatabaseConstants;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Datasource implements DatabaseConstants {
@@ -25,11 +22,29 @@ public class Datasource implements DatabaseConstants {
             EMPLOYEE_CODE+"=?";
     private static final String GET_EMPLOYEE_BY_COMPANY = "SELECT * FROM "+EMPLOYEE_TABLE+" WHERE "+EMPLOYEE_COMPANY+"=?";
     private static final String GET_EMPLOYEE_BY_DEPT = "SELECT * FROM "+EMPLOYEE_TABLE+" WHERE "+EMPLOYEE_DEPT_ID+"=?";
-    private static final String GET_ALL_ASSETS = "SELECT * FROM "+ASSETS_TABLE;
+    private static final String GET_ALL_ASSETS = "SELECT * FROM "+ASSETS_TABLE+" ORDER BY "+ASSETS_TYPE;
+    private static final String GET_ASSETS_RELEASED = "SELECT A."+ALLOCATION_EMP_CODE+", D."+DEPARTMENT_NAME
+            +", L."+LOCATION_CITY+", L."+LOCATION_SPACE+", A."+ALLOCATION_TYPE+", A."+ALLOCATION_SUBTYPE+", A."
+            +ALLOCATION_SERIAL+", A."+ALLOCATION_DATE+" FROM "+ALLOCATION_TABLE+" A, "+EMPLOYEE_TABLE+" E, "
+            +DEPARTMENT_TABLE+" D, "+LOCATION_TABLE+" L WHERE A."+ALLOCATION_EMP_CODE+"=E."+EMPLOYEE_CODE+" AND E."
+            +EMPLOYEE_DEPT_ID+"=D."+DEPARTMENT_DEPT_ID+" AND D."+DEPARTMENT_LOCATION_ID+"=L."+LOCATION_ID
+            +" AND A."+ALLOCATION_STATUS+"='Accepted'";
     private static final String GET_SUBTYPE_ASSETS = "SELECT * FROM "+ASSETS_TABLE+" WHERE "+ASSETS_TYPE+"=? AND "
             +ASSETS_SUBTYPE+"=?";
     private static final String GET_VENDOR_ASSETS = "SELECT * FROM "+ASSETS_TABLE+" WHERE "+ASSETS_VENDOR+"=?";
     private static final String GET_ALL_ALLOCATION = "SELECT * FROM "+ALLOCATION_TABLE;
+    private static final String GET_ALLOCATION_BY_EMPLOYEE = "SELECT * FROM "+ALLOCATION_TABLE+" WHERE "
+            + ALLOCATION_EMP_CODE + "=? AND "+ALLOCATION_TYPE+" NOT IN ('VPN', 'SAP') AND "+ALLOCATION_STATUS+" NOT " +
+            "IN ('WAITING', 'Clearance Waiting') AND "+ALLOCATION_SERIAL+" != ''";
+    private static final String GET_ALLOCATION_BY_EMPLOYEE_NO_FILTER = "SELECT * FROM "+ALLOCATION_TABLE+" WHERE "
+            + ALLOCATION_EMP_CODE + "=? AND "+ALLOCATION_TYPE+" NOT IN ('VPN', 'SAP')";
+    private static final String GET_ASSET_REQUESTS = "SELECT "+ALLOCATION_ID+","+ALLOCATION_EMP_CODE+","+ALLOCATION_TYPE+","
+            +ALLOCATION_SUBTYPE+","+ALLOCATION_LOCATION_ID+" FROM "+ALLOCATION_TABLE+" WHERE "
+            +ALLOCATION_STATUS+" IN ('WAITING') AND "+ALLOCATION_TYPE+" NOT IN ('VPN','SAP','Admin Requirement','Email')";
+    private static final String GET_CLEARANCES = "SELECT "+ALLOCATION_ID+","+ALLOCATION_EMP_CODE+","+ALLOCATION_TYPE+","
+            +ALLOCATION_SUBTYPE+","+ALLOCATION_LOCATION_ID+","+ALLOCATION_SERIAL+" FROM "+ALLOCATION_TABLE+" WHERE "
+            +ALLOCATION_STATUS+" IN ('Clearance Waiting') AND "+ALLOCATION_TYPE
+            +" NOT IN ('VPN','SAP','Admin Requirement','Email')";
 
     public Datasource(Connection conn) {
         this.conn = conn;
@@ -183,7 +198,7 @@ public class Datasource implements DatabaseConstants {
         }
     }
 
-    // Get Employee by Dept Name and location of dept
+    // Get Employee by Dept Name and location of Dept
     public ArrayList<EmployeeDTO> getEmployeeByDept(String deptName, String deptLocationId) {
         try {
             String deptId = new DepartmentDAO(conn).getDeptId(deptName, deptLocationId);
@@ -259,5 +274,88 @@ public class Datasource implements DatabaseConstants {
         }
     }
 
-    // TODO: Write queries and functions for allocation by IT Assets, Email, Datacard, VPN, SAP, all
+    // get allocations based on employee that are not on waiting
+    public ArrayList<AllocationDTO> getAllocationsByEmployeeNotWaiting(String empId) {
+        try {
+            PreparedStatement allocationByEmployee = conn.prepareStatement(GET_ALLOCATION_BY_EMPLOYEE);
+            allocationByEmployee.setString(1, empId);
+            ArrayList<AllocationDTO> allocations = new ArrayList<>();
+            ResultSet results = allocationByEmployee.executeQuery();
+            while(results.next()) {
+                allocations.add(new AllocationDTO(results.getInt(1), results.getString(2), results.getString(3), results.getString(4), results.getString(5)
+                        ,results.getInt(6), results.getString(7),results.getString(8),results.getString(9),results.getString(10),results.getString(11)
+                        ,results.getString(12),results.getString(13),results.getString(14),results.getString(15),results.getString(16),results.getString(17)
+                        ,results.getString(18),results.getString(19),results.getString(20),results.getString(21),results.getInt(22)));
+            }
+            return allocations;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while fetching Allocation data: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<AllocationDTO> getAllocationsByEmployeeAllStatus(String empId) {
+        try {
+            PreparedStatement allocationByEmployee = conn.prepareStatement(GET_ALLOCATION_BY_EMPLOYEE_NO_FILTER);
+            allocationByEmployee.setString(1, empId);
+            ArrayList<AllocationDTO> allocations = new ArrayList<>();
+            ResultSet results = allocationByEmployee.executeQuery();
+            while(results.next()) {
+                allocations.add(new AllocationDTO(results.getInt(1), results.getString(2), results.getString(3), results.getString(4), results.getString(5)
+                        ,results.getInt(6), results.getString(7),results.getString(8),results.getString(9),results.getString(10),results.getString(11)
+                        ,results.getString(12),results.getString(13),results.getString(14),results.getString(15),results.getString(16),results.getString(17)
+                        ,results.getString(18),results.getString(19),results.getString(20),results.getString(21),results.getInt(22)));
+            }
+            return allocations;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while fetching Allocation data: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<ViewRequestsDTO> getAllAssetRequests() {
+        try {
+            PreparedStatement assetAllocation = conn.prepareStatement(GET_ASSET_REQUESTS);
+            ResultSet results = assetAllocation.executeQuery();
+            ArrayList<ViewRequestsDTO> assetAllocations = new ArrayList<>();
+            while(results.next())
+                assetAllocations.add(new ViewRequestsDTO(results.getString(2), results.getString(5), results.getString(4),
+                        results.getString(3), results.getInt(1)));
+            return assetAllocations;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while fetching Asset Allocation data: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<AssetReleasedDTO> getAssetsReleased() {
+        try {
+            PreparedStatement assetsReleased = conn.prepareStatement(GET_ASSETS_RELEASED);
+            ResultSet results = assetsReleased.executeQuery();
+            ArrayList<AssetReleasedDTO> assets = new ArrayList<>();
+            while(results.next())
+                assets.add(new AssetReleasedDTO(results.getString(1), results.getString(2), results.getString(3),
+                        results.getString(4), results.getString(5), results.getString(6), results.getString(7),
+                        results.getString(8)));
+            return assets;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while fetching Asset Released data: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<ViewClearancesDTO> getAllClearanceRequests() {
+        try {
+            PreparedStatement clearances = conn.prepareStatement(GET_CLEARANCES);
+            ResultSet results = clearances.executeQuery();
+            ArrayList<ViewClearancesDTO> assetAllocations = new ArrayList<>();
+            while(results.next())
+                assetAllocations.add(new ViewClearancesDTO(results.getString(2), results.getString(5), results.getString(4),
+                        results.getString(3), results.getInt(1), results.getString(6)));
+            return assetAllocations;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while fetching Asset Allocation data: "+e.getMessage());
+            return null;
+        }
+    }
 }

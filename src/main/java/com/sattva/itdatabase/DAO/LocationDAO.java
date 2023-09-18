@@ -18,6 +18,12 @@ public class LocationDAO implements DatabaseConstants {
             LOCATION_CITY+"=? AND "+LOCATION_LOCATION+"=?";
     private static final String SPACE_EXISTS = "SELECT "+LOCATION_CITY+" FROM "+LOCATION_TABLE+" WHERE "+
             LOCATION_CITY+"=? AND "+LOCATION_LOCATION+"=? AND "+LOCATION_SPACE+"=?";
+    private static final String GET_LOCATION_NAME = "SELECT "+LOCATION_LOCATION+" FROM "+LOCATION_TABLE+" WHERE "
+            +LOCATION_ID+"=?";
+    private static final String GET_SPACE_NAME = "SELECT "+LOCATION_SPACE+" FROM "+LOCATION_TABLE+" WHERE "
+            +LOCATION_ID+"=?";
+    private static final String GET_CITY_NAME = "SELECT "+LOCATION_CITY+" FROM "+LOCATION_TABLE+" WHERE "
+            +LOCATION_ID+"=?";
 
     // Constructor to accept database connection
     public LocationDAO(Connection conn) {
@@ -90,6 +96,42 @@ public class LocationDAO implements DatabaseConstants {
             if(affectedRows != 1)
                 throw new SQLException("More than one row affected when inserting location "+location+", "+city);
             return locationId;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public String getLocationName(String locationId) {
+        try {
+            PreparedStatement getLocation = conn.prepareStatement(GET_LOCATION_NAME);
+            getLocation.setString(1, locationId);
+            ResultSet results = getLocation.executeQuery();
+            return results.getString(1);
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public String getCityName(String locationId) {
+        try {
+            PreparedStatement getLocation = conn.prepareStatement(GET_CITY_NAME);
+            getLocation.setString(1, locationId);
+            ResultSet results = getLocation.executeQuery();
+            return results.getString(1);
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public String getSpaceName(String locationId) {
+        try {
+            PreparedStatement getLocation = conn.prepareStatement(GET_SPACE_NAME);
+            getLocation.setString(1, locationId);
+            ResultSet results = getLocation.executeQuery();
+            return results.getString(1);
         } catch (SQLException e) {
             System.out.println("Exception Occurred: "+e.getMessage());
             return null;

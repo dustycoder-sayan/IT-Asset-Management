@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.AmbientLight?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.sattva.itassetmanagement.EmployeeUI.AssetAcqController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="647.0" prefWidth="771.0" style="-fx-background-color: #9DB2BF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sattva.itassetmanagement.EmployeeUI.AssetAcqController">
+    <children>
+        <ImageView fitHeight="83.0" fitWidth="142.0" layoutX="615.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/salarpuria-sattva-logo.png" />
+            </image>
+        </ImageView>
+        <Label alignment="CENTER" layoutX="-14.0" layoutY="3.0" prefHeight="100.0" prefWidth="771.0" text="Assets Acquired/Requested">
+            <font>
+                <Font name="Javanese Text" size="36.0" />
+            </font>
+        </Label>
+        <TableView fx:id="assetTable" layoutX="38.0" layoutY="143.0" prefHeight="475.0" prefWidth="696.0">
+            <columns>
+                <TableColumn fx:id="typeColumn" prefWidth="103.5" text="Type" />
+                <TableColumn fx:id="subTypeColumn" prefWidth="160.5" text="SubType" />
+                <TableColumn fx:id="serialColumn" minWidth="0.0" prefWidth="135.0" text="Serial" />
+                <TableColumn fx:id="dateColumn" prefWidth="173.0" text="Date of Allocation" />
+            <TableColumn fx:id="statusCol" maxWidth="138.0" minWidth="-1.0" prefWidth="123.0" text="Status" />
+            </columns>
+        </TableView>
+      <AmbientLight lightOn="true">
+         <color>
+            <Color red="0.5" green="1.0" />
+         </color>
+      </AmbientLight>
+    </children>
 </AnchorPane>

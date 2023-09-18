@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="assetPane" prefHeight="647.0" prefWidth="771.0" style="-fx-background-color: #9DB2BF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sattva.itassetmanagement.AdminUI.AssetSubReqController">
+    <children>
+        <ImageView fitHeight="83.0" fitWidth="142.0" layoutX="615.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/salarpuria-sattva-logo.png" />
+            </image>
+        </ImageView>
+        <Label alignment="CENTER" layoutY="3.0" prefHeight="100.0" prefWidth="771.0" text="Asset Request">
+            <font>
+                <Font name="Javanese Text" size="36.0" />
+            </font>
+        </Label>
+        <Label layoutX="112.0" layoutY="131.0" text="Code">
+            <font>
+                <Font name="Javanese Text" size="20.0" />   
+            </font>
+        </Label>
+        <Label layoutX="425.0" layoutY="131.0" text="Name">
+            <font>
+                <Font name="Javanese Text" size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="112.0" layoutY="199.0" text="Company">
+            <font>
+                <Font name="Javanese Text" size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="425.0" layoutY="199.0" text="Designation">
+            <font>
+                <Font name="Javanese Text" size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="112.0" layoutY="268.0" text="Contact">
+            <font>
+                <Font name="Javanese Text" size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="422.0" layoutY="268.0" text="Email ID">
+            <font>
+                <Font name="Javanese Text" size="20.0" />
+            </font>
+        </Label>
+        <Label layoutX="112.0" layoutY="344.0" text="Department">
+            <font>
+                <Font name="Javanese Text" size="20.0" />
+            </font>
+        </Label>
+      <Label layoutX="423.0" layoutY="344.0" text="Location">
+         <font>
+            <Font name="Javanese Text" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="425.0" layoutY="417.0" text="Space">
+         <font>
+            <Font name="Javanese Text" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="112.0" layoutY="417.0" text="City">
+         <font>
+            <Font name="Javanese Text" size="20.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="assetName" layoutX="119.0" layoutY="497.0" prefHeight="25.0" prefWidth="130.0" />
+      <ChoiceBox fx:id="model" layoutX="321.0" layoutY="497.0" prefHeight="25.0" prefWidth="130.0" />
+      <ChoiceBox fx:id="serial" layoutX="528.0" layoutY="497.0" prefHeight="25.0" prefWidth="130.0" />
+      <Text fx:id="code" layoutX="263.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="name" layoutX="544.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="company" layoutX="263.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="desgn" layoutX="544.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="contact" layoutX="263.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="email" layoutX="544.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="dept" layoutX="263.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="city" layoutX="263.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="space" layoutX="544.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="submitBtn" layoutX="389.0" layoutY="564.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="56.0" prefWidth="271.0" text="ALLOCATE" />
+      <Text fx:id="loc" layoutX="544.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="rejectBtn" layoutX="114.0" layoutY="564.0" mnemonicParsing="false" onAction="#onReject" prefHeight="56.0" prefWidth="271.0" text="REJECT" />
+    </children>
+</AnchorPane>

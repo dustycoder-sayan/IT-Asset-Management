@@ -17,20 +17,22 @@
                 <Image url="@../images/salarpuria-sattva-logo.png" />
             </image>
         </ImageView>
-        <Label alignment="CENTER" layoutY="3.0" prefHeight="100.0" prefWidth="771.0" text="Asset Requests">
+        <Label alignment="CENTER" layoutY="3.0" prefHeight="100.0" prefWidth="771.0" text="Asset Requested">
             <font>
                 <Font name="Javanese Text" size="36.0" />
             </font>
         </Label>
-        <Button fx:id="submitBtn" layoutX="144.0" layoutY="513.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="40.0" prefWidth="504.0" text="SUBMIT">
+        <Button fx:id="submitBtn" layoutX="144.0" layoutY="593.0" mnemonicParsing="false" onAction="#onSubmit" prefHeight="40.0" prefWidth="504.0" text="SUBMIT">
             <cursor>
                 <Cursor fx:constant="HAND" />
             </cursor>
         </Button>
-        <TableView fx:id="assetTable" layoutX="18.0" layoutY="151.0" prefHeight="294.0" prefWidth="734.0">
+        <TableView fx:id="assetTable" layoutX="38.0" layoutY="138.0" prefHeight="405.0" prefWidth="696.0">
             <columns>
-                <TableColumn prefWidth="368.0" text="C1" />
-                <TableColumn prefWidth="338.0" text="C2" />
+            <TableColumn fx:id="locationCol" prefWidth="140.0" text="Location" />
+            <TableColumn fx:id="empCodeCol" prefWidth="149.0" text="Employee Code" />
+                <TableColumn fx:id="typeColumn" prefWidth="129.5" text="Type" />
+                <TableColumn fx:id="subTypeColumn" maxWidth="259.0" minWidth="-1.0" prefWidth="132.5" text="SubType" />
             </columns>
         </TableView>
     </children>

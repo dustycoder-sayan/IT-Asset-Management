@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class EmployeeDAO implements DatabaseConstants {
     private final Connection conn;            // Database Connection
@@ -38,6 +39,7 @@ public class EmployeeDAO implements DatabaseConstants {
     private static final String UPDATE_EMPLOYEE_PASSWORD = "UPDATE "+EMPLOYEE_TABLE+" SET "+EMPLOYEE_PASSWORD+"=? " +
             "WHERE "+EMPLOYEE_CODE+"=?";
     private static final String GET_EMPLOYEE_DETAILS = "SELECT * FROM "+EMPLOYEE_TABLE+" WHERE "+EMPLOYEE_CODE+"=?";
+    private static final String GET_ALL_EMPLOYEE_IDS = "SELECT "+EMPLOYEE_CODE+" FROM "+EMPLOYEE_TABLE;
 
     // Constructor to accept database connection
     public EmployeeDAO(Connection conn) {
@@ -277,6 +279,20 @@ public class EmployeeDAO implements DatabaseConstants {
                     results.getString(11), results.getString(8), results.getString(9));
         } catch (SQLException e) {
             System.out.println("Exception Occurred while fetching Employee data: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<String> getAllEmployeeCodes() {
+        try {
+            ArrayList<String> ids = new ArrayList<>();
+            PreparedStatement employees = conn.prepareStatement(GET_ALL_EMPLOYEE_IDS);
+            ResultSet results = employees.executeQuery();
+            while(results.next())
+                ids.add(results.getString(1));
+            return ids;
+        } catch(SQLException e) {
+            System.out.println("Exception Occurred while fetching Employee IDs: "+e.getMessage());
             return null;
         }
     }

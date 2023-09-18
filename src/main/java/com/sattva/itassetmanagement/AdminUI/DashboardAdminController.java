@@ -1,18 +1,10 @@
 package com.sattva.itassetmanagement.AdminUI;
 
-import com.sattva.itassetmanagement.EmployeeUI.DashboardEmpController;
-import com.sattva.itdatabase.DAO.AllocationDAO;
-import com.sattva.itdatabase.DTO.AllocationDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -129,44 +121,106 @@ public class DashboardAdminController implements Initializable {
     }
 
     public void addAsset(ActionEvent e) throws IOException {
-
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("add-asset.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Add Asset");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void checkAssetRequests(ActionEvent e) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("asset-requests.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("asset-req.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Add Employee");
+        stage.setTitle("Asset Requests");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void checkDatacardRequests(ActionEvent e) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("datacard-req.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Datacard Requests");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void checkEmailRequests(ActionEvent e) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("email-req.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Email Requests");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
     public void checkVpnRequests(ActionEvent e) throws IOException {
-
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("vpn-req.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("VPN Requests");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void checkSapRequests(ActionEvent e) throws IOException {
-
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("sap-req.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("SAP Requests");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void checkClearanceRequests(ActionEvent e) throws IOException {
-
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("clearance-req.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Clearance Requests");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void displayAllAllocation(ActionEvent e) throws IOException {
-
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("all-asset.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Asset Inventory");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void addNewVendors(ActionEvent e) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("add-vendor.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Add Vendors");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
 
+    public void displayReleasedAssets(ActionEvent e) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(DashboardAdminController.class.getResource("assets-released.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Assets Released");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void placeNewOrders(ActionEvent e) throws IOException {
-
-    }
-
-    public void seePrevOrders(ActionEvent e) throws IOException {
 
     }
 }

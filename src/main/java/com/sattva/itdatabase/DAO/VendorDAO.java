@@ -17,8 +17,7 @@ public class VendorDAO implements DatabaseConstants {
             +VENDOR_CONTACT+"=? AND "+VENDOR_LOCATION+"=? AND "+VENDOR_EMAIL+"=?";
     public static final String UPDATE_VENDOR_CONTACT = "UPDATE "+VENDOR_TABLE+" SET "+VENDOR_CONTACT+"=? WHERE "+
             VENDOR_ID+"=?";
-    public static final String GET_VENDOR_ID = "SELECT "+VENDOR_ID+" FROM "+VENDOR_TABLE+" WHERE "+VENDOR_NAME+"=? AND " +
-            VENDOR_CONTACT+"=?";
+    public static final String GET_VENDOR_ID = "SELECT "+VENDOR_ID+" FROM "+VENDOR_TABLE+" WHERE "+VENDOR_NAME+"=?";
 
     // Constructor to accept database connection
     public VendorDAO(Connection conn) {
@@ -85,11 +84,10 @@ public class VendorDAO implements DatabaseConstants {
     }
 
     // Returns vendorId if vendor exists, else returns -1
-    public int getVendorId(String name, String contact) {
+    public int getVendorId(String name) {
         try {
             PreparedStatement getVendorId = conn.prepareStatement(GET_VENDOR_ID);
             getVendorId.setString(1, name);
-            getVendorId.setString(2, contact);
             ResultSet result = getVendorId.executeQuery();
             if(result.next())
                 return result.getInt(1);

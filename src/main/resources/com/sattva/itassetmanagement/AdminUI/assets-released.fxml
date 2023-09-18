@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="647.0" prefWidth="771.0" style="-fx-background-color: #9DB2BF;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sattva.itassetmanagement.AdminUI.AssetsReleasedController">
+    <children>
+        <ImageView fitHeight="83.0" fitWidth="142.0" layoutX="621.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/salarpuria-sattva-logo.png" />
+            </image>
+        </ImageView>
+        <Label alignment="CENTER" layoutX="-1.0" layoutY="-25.0" prefHeight="167.0" prefWidth="803.0" text="Assets Released">
+            <font>
+                <Font name="Javanese Text" size="36.0" />
+            </font>
+        </Label>
+        <TableView fx:id="assetTable" layoutX="-1.0" layoutY="138.0" prefHeight="509.0" prefWidth="803.0">
+            <columns>
+                <TableColumn fx:id="codeCol" prefWidth="95.5" text="Employee Code" />
+                <TableColumn fx:id="deptCol" prefWidth="99.0" text="Department" />
+                <TableColumn fx:id="cityCol" maxWidth="305.5" minWidth="-1.0" prefWidth="88.5" text="City" />
+                <TableColumn fx:id="spaceCol" prefWidth="118.5" text="Space" />
+                <TableColumn fx:id="typeCol" prefWidth="103.0" text="Type" />
+                <TableColumn fx:id="subTypeCol" prefWidth="102.0" text="Sub Type" />
+                <TableColumn fx:id="serialCol" maxWidth="99.0" minWidth="-1.0" prefWidth="80.5" text="Serial" />
+                <TableColumn fx:id="dateCol" prefWidth="115.0" text="Date of Allocation" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

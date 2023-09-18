@@ -131,6 +131,8 @@
           <Menu mnemonicParsing="false" text="IT Requests">
             <items>
               <MenuItem fx:id="assetRequests" mnemonicParsing="false" onAction="#checkAssetRequests" text="Asset Requests" />
+                  <MenuItem fx:id="assetRequests1" mnemonicParsing="false" onAction="#checkDatacardRequests" text="Datacard Requests" />
+                  <MenuItem fx:id="assetRequests3" mnemonicParsing="false" onAction="#checkEmailRequests" text="Email ID Requests" />
                   <MenuItem fx:id="vpnRequests" mnemonicParsing="false" onAction="#checkVpnRequests" text="VPN Requests" />
                   <MenuItem fx:id="sapRequests" mnemonicParsing="false" onAction="#checkSapRequests" text="SAP Requests" />
             </items>
@@ -143,6 +145,7 @@
           <Menu mnemonicParsing="false" text="Cumulative Assets">
             <items>
               <MenuItem fx:id="allAssets" mnemonicParsing="false" onAction="#displayAllAllocation" text="Display Asset Inventory" />
+                  <MenuItem fx:id="releasedAssets" mnemonicParsing="false" onAction="#displayReleasedAssets" text="Display Assets Released" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Location and Dept">
@@ -155,7 +158,6 @@
               <items>
                   <MenuItem fx:id="addNewVendor" mnemonicParsing="false" onAction="#addNewVendors" text="Add New Vendor" />
                 <MenuItem fx:id="vendorPlaceOrders" mnemonicParsing="false" onAction="#placeNewOrders" text="Place new Orders" />
-                  <MenuItem fx:id="prevOrders" mnemonicParsing="false" onAction="#seePrevOrders" text="See Previous Orders" />
               </items>
             </Menu>
         </menus>
