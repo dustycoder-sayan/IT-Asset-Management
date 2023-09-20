@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AssetSubReqController {
     private final Connection conn = ConnectionFactory.getInstance().open();
@@ -26,6 +27,7 @@ public class AssetSubReqController {
     private String empCode, type, subType;
     private String assetNameSelected = null, modelSelected = null;
     private int allocationId;
+    private ArrayList<String> serials, models;
 
     @FXML
     private ChoiceBox<String> assetName;
@@ -165,17 +167,19 @@ public class AssetSubReqController {
     }
 
     public void setModel(ActionEvent e) {
-        if(!model.getItems().isEmpty())
-            model.getItems().removeAll();
+        if(models != null)
+            model.getItems().removeAll(models);
         assetNameSelected = assetName.getValue();
-        model.getItems().addAll(new AssetsDAO(conn).assetModels(type, subType, assetNameSelected));
+        models = new AssetsDAO(conn).assetModels(type, subType, assetNameSelected);
+        model.getItems().addAll(models);
         model.setOnAction(this::setSerial);
     }
 
     private void setSerial(ActionEvent event) {
-        if(!serial.getItems().isEmpty())
-            serial.getItems().removeAll();
+        if(serials != null)
+            serial.getItems().removeAll(serials);
         modelSelected = model.getValue();
-        serial.getItems().addAll(new AssetsDAO(conn).assetSerials(type, subType, assetNameSelected, modelSelected));
+        serials = new AssetsDAO(conn).assetSerials(type, subType, assetNameSelected, modelSelected);
+        serial.getItems().addAll(serials);
     }
 }

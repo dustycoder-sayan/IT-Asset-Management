@@ -31,7 +31,10 @@ public class AssetAcqController {
     private TableColumn<AllocationDTO, String> typeColumn;
 
     @FXML
-    private TableColumn<?, ?> statusCol;
+    private TableColumn<AllocationDTO, String> statusCol;
+
+    @FXML
+    private TableColumn<AllocationDTO, String> commentsCol;
 
     private Connection conn = ConnectionFactory.getInstance().open();
     private String code;
@@ -47,6 +50,7 @@ public class AssetAcqController {
         subTypeColumn.setCellValueFactory(new PropertyValueFactory<>("subType"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        commentsCol.setCellValueFactory(new PropertyValueFactory<>("remarks"));
 
         ArrayList<AllocationDTO> allocations = new Datasource(conn).getAllocationsByEmployeeAllStatus(code);
         if(allocations.isEmpty())

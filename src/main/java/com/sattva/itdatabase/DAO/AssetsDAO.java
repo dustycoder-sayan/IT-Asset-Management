@@ -186,6 +186,34 @@ public class AssetsDAO implements DatabaseConstants {
         }
     }
 
+    // Update instock and outstock on clearance
+    public boolean updateInstockOnClearance(String serial) {
+        try {
+            if(!assetExists(serial))
+                throw new SQLException("No such asset exists");
+            int inStock = getInStock(serial);
+            int outStock = getOutStock(serial);
+            inStock += 1;
+            outStock -= 1;
+            PreparedStatement updateInstock = conn.prepareStatement(UPDATE_INSTOCK);
+            PreparedStatement updateOutstock = conn.prepareStatement(UPDATE_OUTSTOCK);
+            updateInstock.setInt(1, inStock);
+            updateInstock.setString(2, serial);
+            updateOutstock.setInt(1, outStock);
+            updateOutstock.setString(2, serial);
+
+            int affectedRows1 = updateInstock.executeUpdate();
+            int affectedRows2 = updateOutstock.executeUpdate();
+
+            if(affectedRows2!=1 || affectedRows1!=1)
+                throw new SQLException("More than one row affected when updating stock of "+serial);
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred: "+e.getMessage());
+            return false;
+        }
+    }
+
     // Update stock when asset is released or given to employees
     public boolean assetReleased(String serial, int stockReleased) {
         try {

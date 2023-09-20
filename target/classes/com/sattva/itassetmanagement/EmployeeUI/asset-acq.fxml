@@ -24,11 +24,12 @@
         </Label>
         <TableView fx:id="assetTable" layoutX="38.0" layoutY="143.0" prefHeight="475.0" prefWidth="696.0">
             <columns>
-                <TableColumn fx:id="typeColumn" prefWidth="103.5" text="Type" />
-                <TableColumn fx:id="subTypeColumn" prefWidth="160.5" text="SubType" />
-                <TableColumn fx:id="serialColumn" minWidth="0.0" prefWidth="135.0" text="Serial" />
-                <TableColumn fx:id="dateColumn" prefWidth="173.0" text="Date of Allocation" />
-            <TableColumn fx:id="statusCol" maxWidth="138.0" minWidth="-1.0" prefWidth="123.0" text="Status" />
+                <TableColumn fx:id="typeColumn" prefWidth="78.5" text="Type" />
+                <TableColumn fx:id="subTypeColumn" prefWidth="103.5" text="SubType" />
+                <TableColumn fx:id="serialColumn" minWidth="0.0" prefWidth="90.5" text="Serial" />
+                <TableColumn fx:id="dateColumn" prefWidth="143.5" text="Date of Allocation" />
+            <TableColumn fx:id="statusCol" maxWidth="146.5" minWidth="-1.0" prefWidth="103.5" text="Status" />
+            <TableColumn fx:id="commentsCol" maxWidth="175.5" minWidth="-1.0" prefWidth="175.5" text="Comments" />
             </columns>
         </TableView>
       <AmbientLight lightOn="true">

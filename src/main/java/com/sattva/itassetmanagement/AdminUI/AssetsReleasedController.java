@@ -23,28 +23,28 @@ public class AssetsReleasedController implements Initializable {
     private TableView<AssetReleasedDTO> assetTable;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> cityCol;
+    private TableColumn<AssetReleasedDTO, String> cityCol;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> codeCol;
+    private TableColumn<AssetReleasedDTO, String> codeCol;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> dateCol;
+    private TableColumn<AssetReleasedDTO, String> dateCol;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> deptCol;
+    private TableColumn<AssetReleasedDTO, String> deptCol;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> serialCol;
+    private TableColumn<AssetReleasedDTO, String> serialCol;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> spaceCol;
+    private TableColumn<AssetReleasedDTO, String> spaceCol;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> subTypeCol;
+    private TableColumn<AssetReleasedDTO, String> subTypeCol;
 
     @FXML
-    private TableColumn<AssetsReleasedController, String> typeCol;
+    private TableColumn<AssetReleasedDTO, String> typeCol;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

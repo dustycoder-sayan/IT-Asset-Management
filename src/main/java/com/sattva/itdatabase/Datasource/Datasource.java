@@ -45,6 +45,9 @@ public class Datasource implements DatabaseConstants {
             +ALLOCATION_SUBTYPE+","+ALLOCATION_LOCATION_ID+","+ALLOCATION_SERIAL+" FROM "+ALLOCATION_TABLE+" WHERE "
             +ALLOCATION_STATUS+" IN ('Clearance Waiting') AND "+ALLOCATION_TYPE
             +" NOT IN ('VPN','SAP','Admin Requirement','Email')";
+    private static final String GET_ASSET_COUNTS = "SELECT "+ASSETS_SUBTYPE+", SUM("+ASSETS_INSTOCK+"), SUM("
+            +ASSETS_OUTSTOCK+"), SUM("+ASSETS_OUTSTOCK+"+"+ASSETS_INSTOCK+") FROM "+ASSETS_TABLE+" GROUP BY "
+            +ASSETS_SUBTYPE+" HAVING "+ASSETS_TYPE+" IN ('System')";
 
     public Datasource(Connection conn) {
         this.conn = conn;
@@ -355,6 +358,20 @@ public class Datasource implements DatabaseConstants {
             return assetAllocations;
         } catch (SQLException e) {
             System.out.println("Exception Occurred while fetching Asset Allocation data: "+e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<AssetCountDTO> getAssetCounts() {
+        try {
+            PreparedStatement assetCounts = conn.prepareStatement(GET_ASSET_COUNTS);
+            ResultSet results = assetCounts.executeQuery();
+            ArrayList<AssetCountDTO> list = new ArrayList<>();
+            while(results.next())
+                list.add(new AssetCountDTO(results.getString(1), results.getInt(2), results.getInt(3), results.getInt(4)));
+            return list;
+        } catch (SQLException e) {
+            System.out.println("Exception Occurred while fetching Asset Count data: "+e.getMessage());
             return null;
         }
     }

@@ -24,10 +24,10 @@ public class AllocationDAO implements DatabaseConstants {
             ")"+" VALUES(?,?,?,?,?,?,?,?)";
     private static final String UPDATE_STATUS = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_STATUS+"=? WHERE "
             +ALLOCATION_ID+"=?";
-    private static final String UPDATE_SERIAL = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_SERIAL+"=? WHERE "
+    private static final String     UPDATE_SERIAL = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_SERIAL+"=? WHERE "
             +ALLOCATION_ID+"=?";
     private static final String UPDATE_REMARKS = "UPDATE "+ALLOCATION_TABLE+" SET "+ALLOCATION_REMARKS+"=? WHERE "
-            +ALLOCATION_EMP_CODE+"=? AND "+ALLOCATION_SERIAL+"=?";
+            +ALLOCATION_ID+"=?";
 
     // Constructor to accept database connection
     public AllocationDAO(Connection conn) {
@@ -159,14 +159,12 @@ public class AllocationDAO implements DatabaseConstants {
     }
 
     // Updates the status (cleared, not cleared) of the asset as decided by the admin - Returns true if successfully updated, else returns false
-    public boolean updateStatusAndRemarksOnReturn(String empCode, String serial, String status, String remarks) {
+    public boolean updateStatusAndRemarksOnReturn(int allocId, String status, String remarks) {
         try {
             PreparedStatement accRejClearance = conn.prepareStatement(UPDATE_STATUS);
             PreparedStatement updateRemarks = conn.prepareStatement(UPDATE_REMARKS);
-            accRejClearance.setString(2, empCode);
-            accRejClearance.setString(3, serial);
-            updateRemarks.setString(2, empCode);
-            updateRemarks.setString(3, serial);
+            accRejClearance.setInt(2, allocId);
+            updateRemarks.setInt(2, allocId);
             if(status.equalsIgnoreCase("accept")) {
                 accRejClearance.setString(1, "Cleared");
                 updateRemarks.setString(1, "No damages");
@@ -178,11 +176,11 @@ public class AllocationDAO implements DatabaseConstants {
 
             int affectedRows = accRejClearance.executeUpdate();
             if(affectedRows != 1)
-                throw new SQLException("More than one row affected when updating allocation status of "+serial+" by "+empCode);
+                throw new SQLException("More than one row affected when updating allocation status");
 
             affectedRows = updateRemarks.executeUpdate();
             if(affectedRows != 1)
-                throw new SQLException("More than one row affected when updating allocation remarks of "+serial+" by "+empCode);
+                throw new SQLException("More than one row affected when updating allocation remarks");
 
             return true;
         } catch (SQLException e) {
